@@ -11,8 +11,12 @@ import Foundation
 extension String {
   
   func removingFilePrefix() -> String {
+    return removingComponents(component: "file://")
+  }
+  
+  func removingComponents(component: String) -> String {
     var mutableUrlString = self
-    if let rangeOfFilePrefix = range(of: "file://") {
+    if let rangeOfFilePrefix = range(of: component) {
       mutableUrlString.removeSubrange(rangeOfFilePrefix)
       return mutableUrlString
     }
