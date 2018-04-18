@@ -12,9 +12,7 @@ class DaeConversionManager {
   
   // MARK: - Public Methods
   
-  
-  
-  static func convert(defaultDaesDirectoryPath: String, optimizedDaesDirectoryPath: String, completion: @escaping () -> ()) {
+  func convert(defaultDaesDirectoryPath: String, optimizedDaesDirectoryPath: String, outputUpdateHandler: @escaping (_ outputMessage: String) -> (), completion: @escaping () -> ()) {
     
     guard let scriptPath = Bundle.main.path(forResource: "copySceneKitAssets", ofType: "") else {
       fatalError("copySceneKitAssets not found!")
@@ -22,16 +20,7 @@ class DaeConversionManager {
     
     let task = Process()
     let pipe = Pipe()
-    
-    /* Sample script:
-     
-     */
-    
-    print("\nscript path: /bin/sh \(scriptPath)\n")
-    
     task.launchPath = scriptPath
-    
-    print("\narguements: \(defaultDaesDirectoryPath) -o \(optimizedDaesDirectoryPath)\n")
     task.arguments = [defaultDaesDirectoryPath, "-o", optimizedDaesDirectoryPath]
     task.standardOutput = pipe
     task.terminationHandler = { process in
@@ -43,9 +32,15 @@ class DaeConversionManager {
     task.waitUntilExit()
     
     // Debug Message for shell
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: String.Encoding.utf8)
-    print("output: \(output)")
+    pipe.fileHandleForReading.waitForDataInBackgroundAndNotify()
+    
+    NotificationCenter.default.addObserver(forName: NSNotification.Name.NSFileHandleDataAvailable, object: pipe.fileHandleForReading, queue: .none) { (notification) in
+      if let outputString = String(data: pipe.fileHandleForReading.availableData, encoding: String.Encoding.utf8) {
+        DispatchQueue.main.async {
+          outputUpdateHandler(outputString)
+        }
+      }
+    }
   }
   
 }

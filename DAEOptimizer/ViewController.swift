@@ -14,8 +14,12 @@ class ViewController: NSViewController {
   
   @IBOutlet weak var dragAndDropView: DragAndDropView!
   @IBOutlet weak var outputPathControl: NSPathControl!
+  @IBOutlet weak var messageLabel: NSTextField!
+  @IBOutlet weak var outputTextView: NSTextView!
   
   // MARK: - Properties
+  
+  lazy var daeConversionManager = DaeConversionManager()
   
   // MARK: - Overrides
   
@@ -33,7 +37,7 @@ class ViewController: NSViewController {
   
   private func updateDragAndDropViewAppearance() {
     dragAndDropView.wantsLayer = true
-    dragAndDropView.layer?.backgroundColor = NSColor.white.cgColor
+    dragAndDropView.layer?.backgroundColor = NSColor(deviceRed: 0, green: 114/255, blue: 81/255, alpha: 1.0).cgColor
     dragAndDropView.layer?.cornerRadius = 5
   }
   
@@ -60,10 +64,10 @@ extension ViewController: DragAndDropViewDelegate {
       showAlert(title: "Missing Output Path", message: "Please select valid output path.")
       return
     }
-    print("output path: \(outputPath.removingFilePrefix())\n\n")
-    print("default dae directory url: \(url.absoluteString.removingFilePrefix())\n\n")
-    DaeConversionManager.convert(defaultDaesDirectoryPath: url.absoluteString.removingFilePrefix(), optimizedDaesDirectoryPath: outputPath.removingFilePrefix()) {
-      self.showAlert(title: "Success", message: "Conversion done!")
+    daeConversionManager.convert(defaultDaesDirectoryPath: url.absoluteString.removingFilePrefix(), optimizedDaesDirectoryPath: outputPath.removingFilePrefix(), outputUpdateHandler: { (outputString) in
+     self.outputTextView.string = self.outputTextView.string + "\n> \(outputString)"
+    }) {
+//      self.showAlert(title: "Success", message: "Conversion done!")
     }
   }
 
