@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -673,7 +674,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="DAEOptimizer" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -688,7 +689,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-			<connections>
+                        <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
                     </window>
@@ -703,11 +704,60 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="DAEOptimizer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <pathControl verticalHuggingPriority="750" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jXx-NK-Bq8">
+                                <rect key="frame" x="193" y="20" width="94" height="15"/>
+                                <pathCell key="cell" controlSize="mini" selectable="YES" editable="YES" alignment="left" pathStyle="popUp" id="Ewc-Ig-iEE">
+                                    <font key="font" metaFont="miniSystem"/>
+                                    <url key="url" string="file:///Users/Desktop"/>
+                                </pathCell>
+                            </pathControl>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mGY-Y7-IXL">
+                                <rect key="frame" x="183" y="45" width="115" height="19"/>
+                                <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Output Location" id="YnY-Zq-1NT">
+                                    <font key="font" metaFont="system" size="15"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="ftU-hP-cml" customClass="DragAndDropView" customModule="DAEOptimizer" customModuleProvider="target">
+                                <rect key="frame" x="20" y="99" width="440" height="151"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CxP-aD-h4T">
+                                        <rect key="frame" x="13" y="54" width="414" height="44"/>
+                                        <textFieldCell key="cell" controlSize="mini" sendsActionOnEndEditing="YES" alignment="center" title="Drag and drop folder contains DAE files to optimize" id="Wt8-dh-5aF">
+                                            <font key="font" metaFont="system" size="18"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="CxP-aD-h4T" secondAttribute="trailing" constant="15" id="12L-kW-hsO"/>
+                                    <constraint firstItem="CxP-aD-h4T" firstAttribute="leading" secondItem="ftU-hP-cml" secondAttribute="leading" constant="15" id="5Nr-dM-6MH"/>
+                                    <constraint firstItem="CxP-aD-h4T" firstAttribute="centerY" secondItem="ftU-hP-cml" secondAttribute="centerY" id="K4W-7e-W4d"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="jXx-NK-Bq8" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="58x-ZZ-ef1"/>
+                            <constraint firstItem="mGY-Y7-IXL" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="5Ee-oh-15V"/>
+                            <constraint firstItem="mGY-Y7-IXL" firstAttribute="top" secondItem="ftU-hP-cml" secondAttribute="bottom" constant="35" id="7p1-HB-yU0"/>
+                            <constraint firstItem="jXx-NK-Bq8" firstAttribute="top" secondItem="mGY-Y7-IXL" secondAttribute="bottom" constant="10" id="DFb-HK-V6M"/>
+                            <constraint firstAttribute="trailing" secondItem="ftU-hP-cml" secondAttribute="trailing" constant="20" id="Pwm-ox-7T1"/>
+                            <constraint firstItem="ftU-hP-cml" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="Rlx-sc-mPh"/>
+                            <constraint firstAttribute="bottom" secondItem="jXx-NK-Bq8" secondAttribute="bottom" constant="20" id="XkL-Us-Dpc"/>
+                            <constraint firstItem="ftU-hP-cml" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="rIh-6o-pYL"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="dragAndDropView" destination="ftU-hP-cml" id="rxV-FQ-gZc"/>
+                        <outlet property="outputPathControl" destination="jXx-NK-Bq8" id="MQz-Gr-mwj"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
